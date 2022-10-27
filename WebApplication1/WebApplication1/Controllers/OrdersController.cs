@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.AspNet.OData;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Domain;
 using WebApplication1.Repositories;
@@ -29,8 +28,16 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<IQueryable<Order>>> GetOrders()
         {
             return _context.Orders;
-                // .Include(x => x.Products)
-                // .ToListAsync();
+            // .Include(x => x.Products)
+            // .ToListAsync();
+        }
+
+        // GET: api/Orders
+        [HttpGet("/api/Order2")]
+        [EnableQuery]
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders2()
+        {
+            return await _context.Orders.Include(x => x.Products).ToListAsync();
         }
 
         // GET: api/Orders/5
